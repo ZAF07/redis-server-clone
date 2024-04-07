@@ -47,7 +47,7 @@ func handler(conn net.Conn) {
 		if err != nil {
 			fmt.Printf("🚨 error reading from client: %v", err)
 		}
-		fmt.Printf("💡 Message from client: %v", buf[:n])
+		fmt.Printf("💡 Message from client: %v", string(buf[:n]))
 
 		conn.Write([]byte("+PONG\r\n"))
 	}
