@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	// Uncomment this block to pass the first stage
 	"net"
 	"os"
@@ -32,6 +34,22 @@ func main() {
 }
 
 func handler(conn net.Conn) {
+	defer conn.Close()
+	buf := make([]byte, 1024)
+
+	for {
+		// Timeout for read
+		tErr := conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+		if tErr != nil {
+			fmt.Println("🚨 Read timeout --> ", tErr)
+		}
+		n, err := conn.Read(buf)
+		if err != nil {
+			fmt.Printf("🚨 error reading from client: %v", err)
+		}
+		fmt.Printf("💡 Message from client: %v", buf[:n])
+
+		conn.Write([]byte("+PONG\r\n"))
+	}
 	// write to conn
-	conn.Write([]byte("+PONG\r\n"))
 }
