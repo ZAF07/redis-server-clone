@@ -29,7 +29,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		handler(conn)
+		go handler(conn)
 	}
 }
 
