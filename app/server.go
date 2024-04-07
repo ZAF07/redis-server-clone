@@ -37,24 +37,25 @@ func handler(conn net.Conn) {
 	defer conn.Close()
 	buf := make([]byte, 1024)
 
-	// for {
-	// Timeout for read
-	/*
-		SetReadDeadline is typically set for each new Read. Not the connection itself.
-		So lets say you set the timeout to 5Sec but the entire read would take 6Sec, the current read process would fail with a timeout
-		But the connection would still stay open for subsequent client requests
-	*/
-	tErr := conn.SetReadDeadline(time.Now().Add(20 * time.Second))
-	if tErr != nil {
-		fmt.Println("🚨 Read timeout --> ", tErr)
-	}
-	n, err := conn.Read(buf)
-	if err != nil {
-		fmt.Printf("🚨 error reading from client: %v\n", err)
-	}
-	fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
+	for {
+		// Timeout for read
+		/*
+			SetReadDeadline is typically set for each new Read. Not the connection itself.
+			So lets say you set the timeout to 5Sec but the entire read would take 6Sec, the current read process would fail with a timeout
+			But the connection would still stay open for subsequent client requests
+		*/
+		tErr := conn.SetReadDeadline(time.Now().Add(20 * time.Second))
+		if tErr != nil {
+			fmt.Println("🚨 Read timeout --> ", tErr)
+		}
 
-	conn.Write([]byte("+PONG\r\n"))
-	// }
+		n, err := conn.Read(buf)
+		if err != nil {
+			fmt.Printf("🚨 error reading from client: %v\n", err)
+		}
+		fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
+
+		conn.Write([]byte("+PONG\r\n"))
+	}
 	// write to conn
 }
