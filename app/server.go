@@ -31,5 +31,5 @@ func main() {
 
 func handler(conn net.Conn) {
 	// write to conn
-	conn.Write([]byte("PONG"))
+	conn.Write([]byte("+PONG\r\n"))
 }
