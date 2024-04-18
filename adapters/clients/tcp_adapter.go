@@ -56,7 +56,7 @@ func (t *TCPAdapter) ParseResp(r []byte) protocol.Request {
 	c := reqData[2]
 	// TODO: This is incorrect. check how do i extract all arguments only
 	a := reqData[len(reqData)-1]
-	fmt.Println("❌ --> ", string(r), r)
+	fmt.Println("❌ --> ", string(reqData[0]), reqData)
 
 	// parse the req as per RESP protocol to extract cmd and args
 	cmd, err := extractCmd(c)
