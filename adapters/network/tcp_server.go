@@ -77,6 +77,7 @@ func (t *TCPServer) handle(conn net.Conn) {
 		tErr := conn.SetReadDeadline(time.Now().Add(t.readDeadline))
 		if tErr != nil {
 			fmt.Println("🚨 Read timeout --> ", tErr)
+			continue
 		}
 
 		n, err := conn.Read(buf)
