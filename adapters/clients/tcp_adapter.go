@@ -3,6 +3,7 @@ package clients
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"log"
 
 	protocol "github.com/codecrafters-io/redis-starter-go/adapters"
@@ -39,6 +40,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 		return res, nil
 
 	case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.EchoCmd)):
+		fmt.Println("❓ calling core echo with --> ", req.Args, string(req.Args[0]))
 		res := t.core.Echo(req.Args[0])
 		return res, nil
 	}
