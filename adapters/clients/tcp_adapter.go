@@ -53,7 +53,7 @@ func (t *TCPAdapter) ParseResp(r []byte) protocol.Request {
 	reqData := bytes.Split(r, []byte("\r\n"))
 	c := reqData[2]
 	// TODO: This is incorrect. check how do i extract all arguments only
-	a := reqData[4]
+	a := reqData[len(reqData)-1]
 
 	// parse the req as per RESP protocol to extract cmd and args
 	cmd, err := extractCmd(c)
@@ -63,6 +63,14 @@ func (t *TCPAdapter) ParseResp(r []byte) protocol.Request {
 
 	// validate the cmd and args
 	cmd.Validate(len(a))
+
+	if bytes.EqualFold(cmd.Cmd, []byte(protocol.EchoCmd)) {
+		return protocol.Request{
+			Cmd:    cmd,
+			Args:   reqData[len(reqData)-1:],
+			Length: int(reqData[0][1]),
+		}
+	}
 
 	return protocol.Request{
 		Cmd:    cmd,
