@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+)
 
 type RedisCore struct{}
 
@@ -22,5 +25,12 @@ func (r *RedisCore) Ping() []byte {
 
 func (r *RedisCore) Echo(s []byte) []byte {
 	fmt.Println("GOT IN CORE ECHO -> ", string(s))
-	return s
+
+	buffer := bytes.NewBuffer(nil)
+	buffer.WriteString("+")
+	buffer.Write(s)
+	buffer.WriteString("\r\n")
+	return buffer.Bytes()
+
+	// return []byte("+")
 }
