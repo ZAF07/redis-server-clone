@@ -70,7 +70,7 @@ func (t *TCPAdapter) ParseResp(r []byte) protocol.Request {
 	if bytes.EqualFold(cmd.Cmd, []byte(protocol.EchoCmd)) {
 		return protocol.Request{
 			Cmd:    cmd,
-			Args:   reqData[len(reqData)-1:],
+			Args:   reqData[len(reqData)-2:],
 			Length: int(reqData[0][1]),
 		}
 	}
