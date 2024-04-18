@@ -82,8 +82,9 @@ func (t *TCPServer) handle(conn net.Conn) {
 		n, err := conn.Read(buf)
 		if err != nil {
 			fmt.Printf("🚨 error reading from client: %v\n", err)
+			continue
 		}
-		fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
+		// fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
 
 		// Parse the resquest to extract the command and arguments to pass to the client adapter
 		// cmd, args, err := t.parseRequest(buf[:n])
