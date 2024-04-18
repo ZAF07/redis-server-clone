@@ -83,16 +83,16 @@ func (t *TCPServer) handle(conn net.Conn) {
 		if err != nil {
 			fmt.Printf("🚨 error reading from client: %v\n", err)
 		}
-		fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
+		// fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
 
 		// Parse the resquest to extract the command and arguments to pass to the client adapter
-		cmd, args, err := t.parseRequest(buf[:n])
-		if err != nil {
-			log.Fatalf("error parsing request: %+v", err)
-		}
+		// cmd, args, err := t.parseRequest(buf[:n])
+		// if err != nil {
+		// 	log.Fatalf("error parsing request: %+v", err)
+		// }
 
 		// Call the client adapter passing the command and arguments. Returns a response from the core logic which is the result of the request
-		res, err := t.adapter.Adapt(cmd, args)
+		res, err := t.adapter.Adapt(buf[:n])
 		if err != nil {
 			log.Fatalf("error adapting to core layer: %+v", err)
 		}
@@ -102,6 +102,7 @@ func (t *TCPServer) handle(conn net.Conn) {
 	}
 }
 
+// TODO: Parse should be a part of the core service. TCP server accepts requests, calls TCP adapter which then calls the core service to parse the request. it gets back the cmd and args, which TCP adapter then adapts and calls the core services
 func (t *TCPServer) parseRequest(r []byte) (string, []string, error) {
 	// TODO: Implement the parsing of the RESP string to get the cmd and args (if any)
 	return "command", []string{}, nil

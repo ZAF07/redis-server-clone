@@ -21,7 +21,7 @@ type BulkString struct { // check the first element in the split byte arr to det
 	Cap    int
 }
 
-var commands = map[string]Command{
+var Commands = map[string]Command{
 	"ping": Command{Cmd: []byte("ping"), MinArgs: 0},
 	"echo": Command{Cmd: []byte("echo"), MinArgs: 1},
 }
@@ -42,7 +42,7 @@ type Command struct {
 	MinArgs int
 }
 
-func (c Command) validate(args int) bool {
+func (c Command) Validate(args int) bool {
 	// TODO: Also validate that the params are valid (check this in docs)
 	return args >= c.MinArgs
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 
+	protocol "github.com/codecrafters-io/redis-starter-go/adapters"
 	services "github.com/codecrafters-io/redis-starter-go/core/app_services"
 )
 
@@ -33,11 +34,11 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 	req := t.ParseResp(r)
 	// based on the cmd, call the core service
 	switch {
-	case bytes.EqualFold(req.Cmd.Cmd, []byte(PingCmd)):
+	case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.PingCmd)):
 		res := t.core.Ping()
 		return res, nil
 
-	case bytes.EqualFold(req.Cmd.Cmd, []byte(EchoCmd)):
+	case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.EchoCmd)):
 		res := t.core.Echo(req.Args[0])
 		return res, nil
 	}
@@ -48,7 +49,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 PING req: *1\r\n$4\r\nping\r\n
 ECHO req: *2\r\n$4\r\necho\r\n$3\r\nhey\r\n
 */
-func (t *TCPAdapter) ParseResp(r []byte) Request {
+func (t *TCPAdapter) ParseResp(r []byte) protocol.Request {
 	reqData := bytes.Split(r, []byte("\r\n"))
 	c := reqData[2]
 	// TODO: This is incorrect. check how do i extract all arguments only
@@ -61,9 +62,9 @@ func (t *TCPAdapter) ParseResp(r []byte) Request {
 	}
 
 	// validate the cmd and args
-	cmd.validate(len(a))
+	cmd.Validate(len(a))
 
-	return Request{
+	return protocol.Request{
 		Cmd:    cmd,
 		Args:   reqData[3:],
 		Length: int(reqData[0][1]),
@@ -71,8 +72,8 @@ func (t *TCPAdapter) ParseResp(r []byte) Request {
 
 }
 
-func extractCmd(b []byte) (*Command, error) {
-	if cmd, ok := commands[string(b)]; ok {
+func extractCmd(b []byte) (*protocol.Command, error) {
+	if cmd, ok := protocol.Commands[string(b)]; ok {
 		return &cmd, nil
 	}
 	return nil, errors.New("in valid command")
