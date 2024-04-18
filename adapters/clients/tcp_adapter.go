@@ -40,7 +40,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 		return res, nil
 
 	case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.EchoCmd)):
-		fmt.Println("❓ calling core echo with --> ", req, string(req.Args[0]))
+		fmt.Printf("❓ calling core echo with -->%+v, %+v", req, string(req.Args[0]))
 		res := t.core.Echo(req.Args[0])
 		return res, nil
 	}
