@@ -92,9 +92,13 @@ func (t *TCPServer) handle(conn net.Conn) {
 		// }
 
 		// Call the client adapter passing the command and arguments. Returns a response from the core logic which is the result of the request
-		res, err := t.adapter.Adapt(buf[:n])
-		if err != nil {
-			log.Fatalf("error adapting to core layer: %+v", err)
+		var res []byte
+		if len(buf[:n]) > 0 {
+
+			res, err = t.adapter.Adapt(buf[:n])
+			if err != nil {
+				log.Fatalf("error adapting to core layer: %+v", err)
+			}
 		}
 
 		// conn.Write([]byte("+PONG\r\n"))
