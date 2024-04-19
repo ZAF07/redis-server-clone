@@ -3,6 +3,8 @@ package core
 import (
 	"bytes"
 	"fmt"
+
+	"github.com/codecrafters-io/redis-starter-go/protocol"
 )
 
 type RedisCore struct{}
@@ -15,22 +17,37 @@ func NewRedisCore() *RedisCore {
 Ping command can have one optional arg
 If no arg is given, it simple replies with 'PONG'
 */
-func (r *RedisCore) Ping() []byte {
+func (r *RedisCore) Ping(arg []byte) []byte {
 	fmt.Println("GOT IN CORE PING -> ")
-	// if arg != nil {
-	// 	return arg
-	// }
-	return []byte("+PONG\r\n")
+	if arg != nil {
+		return []byte(arg)
+	}
+	return protocol.PINGRESPV1
 }
 
-func (r *RedisCore) Echo(s []byte) []byte {
-	fmt.Println("GOT IN CORE ECHO -> ", string(s))
+func (r *RedisCore) Echo(arg ...[]byte) []byte {
+	fmt.Println("GOT IN CORE ECHO -> ", string(arg[0]))
+	return formatResponse(arg...)
+}
 
-	buffer := bytes.NewBuffer(nil)
-	buffer.WriteString("+")
-	buffer.Write(s)
-	buffer.WriteString("\r\n")
-	return buffer.Bytes()
+func formatResponse(b ...[]byte) []byte {
+	buf := bytes.NewBuffer(nil)
+	buf.WriteByte('+')
 
-	// return []byte("+")
+	if len(b) == 1 {
+		buf.Write(b[0])
+		buf.WriteString("\r\n")
+		return buf.Bytes()
+	}
+
+	for _, val := range b {
+		buf.Write(val)
+		// or
+		// for _, v := range val {
+		// 	buf.WriteByte(v)
+		// }
+	}
+
+	buf.WriteString("\r\n")
+	return buf.Bytes()
 }

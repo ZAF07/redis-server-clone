@@ -13,12 +13,14 @@ import (
 	"github.com/codecrafters-io/redis-starter-go/adapters/clients"
 	"github.com/codecrafters-io/redis-starter-go/adapters/network"
 	"github.com/codecrafters-io/redis-starter-go/core"
+	"github.com/codecrafters-io/redis-starter-go/protocol/parsers"
 	// Uncomment this block to pass the first stage
 )
 
 func main() {
 	core := core.NewRedisCore()
-	tcpAdapter := clients.NewTCPAdapter(core)
+	parser := parsers.NewRESPParserV1()
+	tcpAdapter := clients.NewTCPAdapter(core, parser)
 	tcpServer := network.NewTCPServer("0.0.0.0", tcpAdapter, network.WithReadDeadline("25s"), network.WithReadDeadline("25s"))
 
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
