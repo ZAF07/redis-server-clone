@@ -3,8 +3,8 @@ package core
 import (
 	"fmt"
 
-	"github.com/codecrafters-io/redis-starter-go/protocol"
-	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
+	"github.com/ZAF07/redis-server-clone/protocol"
+	"github.com/ZAF07/redis-server-clone/protocol/zredis"
 )
 
 // The in-memory storage implementation goes here as well

@@ -1,7 +1,7 @@
 package dtos
 
 import (
-	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
+	"github.com/ZAF07/redis-server-clone/protocol/zredis"
 )
 
 /*

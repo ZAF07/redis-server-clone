@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/codecrafters-io/redis-starter-go/dtos"
-	"github.com/codecrafters-io/redis-starter-go/protocol"
-	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
+	"github.com/ZAF07/redis-server-clone/dtos"
+	"github.com/ZAF07/redis-server-clone/protocol"
+	"github.com/ZAF07/redis-server-clone/protocol/zredis"
 )
 
 // TODO: Handle case for when ping is sent without arguments

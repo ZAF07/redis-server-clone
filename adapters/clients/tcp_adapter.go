@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
-	core "github.com/codecrafters-io/redis-starter-go/core"
-	"github.com/codecrafters-io/redis-starter-go/protocol"
-	"github.com/codecrafters-io/redis-starter-go/protocol/parsers"
+	core "github.com/ZAF07/redis-server-clone/core"
+	"github.com/ZAF07/redis-server-clone/protocol"
+	"github.com/ZAF07/redis-server-clone/protocol/parsers"
 )
 
 // TCPAdapter receives the request from clients, parses and validates the request into RESP protocol and calls the core services to execute the redis commands

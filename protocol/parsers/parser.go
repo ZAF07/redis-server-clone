@@ -1,7 +1,7 @@
 package parsers
 
 import (
-	"github.com/codecrafters-io/redis-starter-go/dtos"
+	"github.com/ZAF07/redis-server-clone/dtos"
 )
 
 // Expose interface

@@ -1,6 +1,6 @@
 package core
 
-import "github.com/codecrafters-io/redis-starter-go/protocol/zredis"
+import "github.com/ZAF07/redis-server-clone/protocol/zredis"
 
 type RedisCoreServices interface {
 	Ping(arg []byte) []byte

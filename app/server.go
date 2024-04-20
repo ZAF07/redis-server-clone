@@ -10,10 +10,10 @@ git push origin master
 import (
 	"fmt"
 
-	"github.com/codecrafters-io/redis-starter-go/adapters/clients"
-	"github.com/codecrafters-io/redis-starter-go/adapters/network"
-	"github.com/codecrafters-io/redis-starter-go/core"
-	"github.com/codecrafters-io/redis-starter-go/protocol/parsers"
+	"github.com/ZAF07/redis-server-clone/adapters/clients"
+	"github.com/ZAF07/redis-server-clone/adapters/network"
+	"github.com/ZAF07/redis-server-clone/core"
+	"github.com/ZAF07/redis-server-clone/protocol/parsers"
 )
 
 func main() {
