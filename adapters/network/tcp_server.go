@@ -108,12 +108,6 @@ func (t *TCPServer) handle(conn net.Conn) {
 	}
 }
 
-// TODO: Parse should be a part of the core service. TCP server accepts requests, calls TCP adapter which then calls the core service to parse the request. it gets back the cmd and args, which TCP adapter then adapts and calls the core services
-func (t *TCPServer) parseRequest(r []byte) (string, []string, error) {
-	// TODO: Implement the parsing of the RESP string to get the cmd and args (if any)
-	return "command", []string{}, nil
-}
-
 func WithReadDeadline(rd string) TCPServerOptions {
 	rdl, err := time.ParseDuration(rd)
 	if err != nil {

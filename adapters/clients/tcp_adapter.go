@@ -53,6 +53,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 			argLen := req.GetArgsLength()
 			minArgLen := req.Cmd.MinArgs
 
+			// TODO: Add to helper function. Reuse logic to check if args is sufficient
 			// Ping without args
 			if argLen == minArgLen {
 				res = t.core.Ping(nil)
@@ -71,6 +72,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 			return res, nil
 
 		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDECHO)):
+			// TODO: Use helper to as in Ping to check for valid args
 			fmt.Printf("❓ calling core echo with -->%+v, %+v", req, string(req.Args[0].GetValue()))
 			// ❓ calling core echo with -->{Cmd:0xc000058060 Args:[[103 114 97 112 101] []] Length:50}, grape
 			args := []byte{}
@@ -78,6 +80,12 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 				args = append(args, val.GetValue()...)
 			}
 			res = t.core.Echo(args)
+			return res, nil
+
+		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDSET)):
+			// TODO: Implement better way to pass k:v pair to SET
+			// See if i can arrange the Args better in the Request DTO
+			res = t.core.Set(req.Args[0].GetValue(), req.Args[1])
 			return res, nil
 		}
 	}

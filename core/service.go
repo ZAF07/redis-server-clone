@@ -1,14 +1,16 @@
 package core
 
 import (
-	"bytes"
 	"fmt"
 
 	"github.com/codecrafters-io/redis-starter-go/protocol"
+	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
 )
 
 // The in-memory storage implementation goes here as well
-type RedisCore struct{}
+type RedisCore struct {
+	storage InMemoryStore
+}
 
 func NewRedisCore() *RedisCore {
 	return &RedisCore{}
@@ -31,24 +33,17 @@ func (r *RedisCore) Echo(arg ...[]byte) []byte {
 	return formatResponse(arg...)
 }
 
-func formatResponse(b ...[]byte) []byte {
-	buf := bytes.NewBuffer(nil)
-	buf.WriteByte('+')
+func (r *RedisCore) Set(k []byte, v zredis.RedisDataType) []byte {
+	r.storage.Set(k, v)
 
-	if len(b) == 1 {
-		buf.Write(b[0])
-		buf.WriteString("\r\n")
-		return buf.Bytes()
+	return protocol.OKRESPV1
+}
+
+func (r *RedisCore) Get(k []byte) []byte {
+	res := r.storage.Get(k)
+	if res != nil {
+		return responseBulkString(res.GetValue())
 	}
 
-	for _, val := range b {
-		buf.Write(val)
-		// or
-		// for _, v := range val {
-		// 	buf.WriteByte(v)
-		// }
-	}
-
-	buf.WriteString("\r\n")
-	return buf.Bytes()
+	return protocol.NULLBULKSTRINGV1
 }

@@ -1,6 +1,8 @@
 package dtos
 
-import "github.com/codecrafters-io/redis-starter-go/protocol"
+import (
+	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
+)
 
 /*
 This is the transfer object.
@@ -17,7 +19,7 @@ type Command struct {
 
 type Request struct {
 	Cmd  *Command
-	Args []protocol.RedisDataType
+	Args []zredis.RedisDataType
 	// Length int // do i need?
 }
 

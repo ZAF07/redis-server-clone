@@ -6,6 +6,7 @@ import (
 
 	"github.com/codecrafters-io/redis-starter-go/dtos"
 	"github.com/codecrafters-io/redis-starter-go/protocol"
+	"github.com/codecrafters-io/redis-starter-go/protocol/zredis"
 )
 
 // TODO: Handle case for when ping is sent without arguments
@@ -61,8 +62,8 @@ func getCmd(r []byte) *dtos.Command {
 	}
 }
 
-func getArgs(r [][]byte) []protocol.RedisDataType {
-	args := make([]protocol.RedisDataType, len(r)/2)
+func getArgs(r [][]byte) []zredis.RedisDataType {
+	args := make([]zredis.RedisDataType, len(r)/2)
 	// fmt.Println("length --> ", len(args), string(r[0]))
 	for i := 0; i < len(r); i += 2 {
 		t := bytes.TrimRight(r[i], "\r\n")
@@ -71,8 +72,8 @@ func getArgs(r [][]byte) []protocol.RedisDataType {
 		// figuriing out the type ($, +)
 		val := bytes.NewBuffer(a)
 		switch t[0] {
-		case '$':
-			dt := protocol.BulkString{
+		case protocol.RESPTypeBulkString:
+			dt := zredis.BulkString{
 				Value:  *val,
 				Length: int(t[1]),
 				Cap:    val.Cap(),
