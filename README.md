@@ -31,7 +31,7 @@ Understanding the inner workings of Redis is crucial for developers who work wit
 
 **Using the Mock Server:**
 
-## Any TCP Tool (Netcat)
+- Any TCP Tool (Netcat)
 
 Open a new terminal and run:
 
@@ -39,7 +39,7 @@ Open a new terminal and run:
  echo '*2\r\n$4\r\nping\r\n' | nc localhost 6379
 ```
 
-## Redis-cli
+- Redis-cli
 
 You can use any Redis client tool to interact with the mock server on port 6379. For example, with the `redis-cli` tool:
 
