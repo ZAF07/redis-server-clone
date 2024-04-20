@@ -17,6 +17,7 @@ import (
 )
 
 func main() {
+	// TODO: Allow CLI args for users to input port and host
 	inMemoryStore := core.NewInMemoryStore()
 	core := core.NewRedisCore(inMemoryStore)
 	parser := parsers.NewRESPParserV1()
