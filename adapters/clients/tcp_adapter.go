@@ -54,11 +54,11 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 			minArgLen := req.Cmd.MinArgs
 
 			// Ping without args
-			if argLen == 0 {
+			if argLen == minArgLen {
 				res = t.core.Ping(nil)
 			}
 
-			if argLen == minArgLen {
+			if argLen == 1 {
 				res = t.core.Ping(req.Args[0].GetValue())
 			}
 
