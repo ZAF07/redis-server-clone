@@ -22,6 +22,7 @@ Understanding the inner workings of Redis is crucial for developers who work wit
 **Prerequisites:**
 
 - Golang (version 1.19 or later) installed on your system.
+  **Installation**: (https://go.dev/doc/install)
 
 **Running the Mock Server:**
 
