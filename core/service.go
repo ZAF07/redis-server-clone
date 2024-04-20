@@ -7,6 +7,7 @@ import (
 	"github.com/codecrafters-io/redis-starter-go/protocol"
 )
 
+// The in-memory storage implementation goes here as well
 type RedisCore struct{}
 
 func NewRedisCore() *RedisCore {

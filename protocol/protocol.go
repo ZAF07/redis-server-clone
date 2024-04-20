@@ -40,6 +40,7 @@ type RedisDataType interface {
 	GetValue() []byte
 }
 
+// This should go to a separate package because the core also uses it
 type BulkString struct { // check the first element in the split byte arr to determine its type
 	Value  bytes.Buffer
 	Length int

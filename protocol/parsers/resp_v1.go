@@ -8,14 +8,20 @@ import (
 	"github.com/codecrafters-io/redis-starter-go/protocol"
 )
 
+// TODO: Handle case for when ping is sent without arguments
+// TODO: Implement error handling. There are two kinds if error. Redis specific errors with bytes response and logic or runtime error that needs to be resolved
+// TODO: Implement Request struct pooling to reduce creation of a new Request struct each time
+
 type RespParserV1 struct{}
 
 func NewRESPParserV1() RespParserV1 {
 	return RespParserV1{}
 }
 
-// TODO: Implement error handling. There are two kinds if error. Redis specific errors with bytes response and logic or runtime error that needs to be resolved
 func (r RespParserV1) Parse(req []byte) dtos.Request {
+
+	reqObj := dtos.Request{}
+
 	// seperate the cmd and args based on the firstIdx
 	splitCmdArgs := bytes.SplitAfter(req, []byte("\r\n"))
 	fmt.Println("Sep --> ", splitCmdArgs)
@@ -27,62 +33,36 @@ func (r RespParserV1) Parse(req []byte) dtos.Request {
 		idx 3: = arguments to the command
 	*/
 	c := splitCmdArgs[2]
-	cmd := getCmd(c)
+	reqObj.Cmd = getCmd(c)
 
 	a := splitCmdArgs[3 : len(splitCmdArgs)-1]
 	fmt.Println("🚨 => ", a)
-	args := getArgs(a)
 
-	reqObj := dtos.Request{
-		Cmd:  &cmd,
-		Args: args,
+	if len(a) < 2 {
+		return reqObj
 	}
+	reqObj.Args = getArgs(a)
+
+	// reqObj := dtos.Request{
+	// 	Cmd:  &cmd,
+	// 	Args: args,
+	// }
 
 	return reqObj
 }
 
-func getCmd(r []byte) dtos.Command {
+func getCmd(r []byte) *dtos.Command {
 	c := bytes.TrimRight(r, "\r\n")
-	// TODO: Find a better way to switch cases for cmd. use a map in a function in a helper instead
-	// if cmd, ok := Commands[string(c)]; ok {
-	// 	return cmd, nil
-	// } else {
-	// 	return dtos.Command{}, protocol.ErrUnknownCmd
-	// }
-
-	return Commands[string(c)]
-
-	// switch {
-	// case bytes.EqualFold(c, []byte(constants.CMDECHO)):
-	// 	return dtos.Command{
-	// 		Cmd:     []byte("echo"),
-	// 		MinArgs: 1,
-	// 	}
-
-	// case bytes.EqualFold(c, []byte(constants.CMDPING)):
-	// 	return dtos.Command{
-	// 		Cmd:     []byte("ping"),
-	// 		MinArgs: 0,
-	// 	}
-
-	// case bytes.EqualFold(c, []byte(constants.CMDSET)):
-	// 	return dtos.Command{
-	// 		Cmd:     []byte("set"),
-	// 		MinArgs: 2,
-	// 	}
-
-	// case bytes.EqualFold(c, []byte(constants.CMDGET)):
-	// 	return dtos.Command{
-	// 		Cmd:     []byte("get"),
-	// 		MinArgs: 1,
-	// 	}
-	// }
-	// return dtos.Command{}
+	if cmd, ok := Commands[string(c)]; ok {
+		return &cmd
+	} else {
+		return nil
+	}
 }
 
 func getArgs(r [][]byte) []protocol.RedisDataType {
 	args := make([]protocol.RedisDataType, len(r)/2)
-	fmt.Println("length --> ", len(args), string(r[0]))
+	// fmt.Println("length --> ", len(args), string(r[0]))
 	for i := 0; i < len(r); i += 2 {
 		t := bytes.TrimRight(r[i], "\r\n")
 		a := bytes.TrimRight(r[i+1], "\r\n")
