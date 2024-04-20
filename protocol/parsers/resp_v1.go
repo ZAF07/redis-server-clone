@@ -34,7 +34,7 @@ func (r RespParserV1) Parse(req []byte) dtos.Request {
 	*/
 	c := splitCmdArgs[2]
 	reqObj.Cmd = getCmd(c)
-	fmt.Printf("🚨 CMD => %+v\n", c)
+	fmt.Printf("🚨 CMD => %+v\n", string(reqObj.Cmd.Cmd))
 
 	a := splitCmdArgs[3 : len(splitCmdArgs)-1]
 	fmt.Println("🚨 ARG => ", a)
