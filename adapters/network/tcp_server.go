@@ -80,10 +80,14 @@ func (t *TCPServer) handle(conn net.Conn) {
 			continue
 		}
 
+		/*
+			TODO: Check this. I want to close the connection when a client terminates.
+			What does Read do
+		*/
 		n, err := conn.Read(buf)
 		if err != nil {
-			// fmt.Printf("🚨 error reading from client: %v\n", err)
-			continue
+			fmt.Printf("🚨 error reading from client: %v\n", err)
+			break
 		}
 		// fmt.Printf("💡 Message from client: %v\n", string(buf[:n]))
 
