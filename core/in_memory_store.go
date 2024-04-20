@@ -17,7 +17,9 @@ type InMemoryStoreV1 struct {
 }
 
 func NewInMemoryStore() InMemoryStore {
-	return &InMemoryStoreV1{}
+	return &InMemoryStoreV1{
+		items: make(map[string]*values),
+	}
 }
 
 type values struct {
