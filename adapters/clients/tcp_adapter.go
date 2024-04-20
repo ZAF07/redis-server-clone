@@ -41,6 +41,7 @@ Adapt is the adapter method for a client adapter to translate the client request
 It returns the results of the core later implemention
 */
 func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
+	var res []byte
 	req := t.parser.Parse(r)
 
 	// validate the args
@@ -49,10 +50,24 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 		switch {
 		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDPING)):
 			// Check length of given PING args
-			if req.GetArgsLength() > 1 {
+			argLen := req.GetArgsLength()
+			minArgLen := req.Cmd.MinArgs
+
+			// Ping without args
+			if argLen == 0 {
+				res = t.core.Ping(nil)
+			}
+
+			if argLen == minArgLen {
+				res = t.core.Ping(req.Args[0].GetValue())
+			}
+
+			// Too many args
+			if argLen > minArgLen {
 				return protocol.ErrNumArgs, nil
 			}
-			res := t.core.Ping(req.Args[0].GetValue())
+
+			// res := t.core.Ping(req.Args[0].GetValue())
 			return res, nil
 
 		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDECHO)):
@@ -62,7 +77,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 			for _, val := range req.Args {
 				args = append(args, val.GetValue()...)
 			}
-			res := t.core.Echo(args)
+			res = t.core.Echo(args)
 			return res, nil
 		}
 	}
