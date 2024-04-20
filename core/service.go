@@ -34,6 +34,7 @@ func (r *RedisCore) Echo(arg ...[]byte) []byte {
 }
 
 func (r *RedisCore) Set(k []byte, v zredis.RedisDataType) []byte {
+	fmt.Printf("❌service -> %s || %+v\n", string(k), v.GetValue())
 	r.storage.Set(k, v)
 
 	return protocol.OKRESPV1
