@@ -12,8 +12,10 @@ type RedisCore struct {
 	storage InMemoryStore
 }
 
-func NewRedisCore() *RedisCore {
-	return &RedisCore{}
+func NewRedisCore(s InMemoryStore) *RedisCore {
+	return &RedisCore{
+		storage: s,
+	}
 }
 
 /*

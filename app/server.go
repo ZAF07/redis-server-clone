@@ -18,7 +18,8 @@ import (
 )
 
 func main() {
-	core := core.NewRedisCore()
+	inMemoryStore := core.NewInMemoryStore()
+	core := core.NewRedisCore(inMemoryStore)
 	parser := parsers.NewRESPParserV1()
 	tcpAdapter := clients.NewTCPAdapter(core, parser)
 	tcpServer := network.NewTCPServer("0.0.0.0", tcpAdapter, network.WithReadDeadline("25s"), network.WithReadDeadline("25s"))

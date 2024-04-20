@@ -88,6 +88,10 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 			fmt.Printf("❌ CALLING SET ==> %+v\n", req.Args)
 			res = t.core.Set(req.Args[0].GetValue(), req.Args[1])
 			return res, nil
+
+		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDGET)):
+			res = t.core.Get(req.Args[0].GetValue())
+			return res, nil
 		}
 	}
 
