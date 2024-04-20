@@ -17,6 +17,7 @@ import (
 )
 
 func main() {
+	// Test
 	inMemoryStore := core.NewInMemoryStore()
 	core := core.NewRedisCore(inMemoryStore)
 	parser := parsers.NewRESPParserV1()
