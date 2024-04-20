@@ -85,6 +85,7 @@ func (t *TCPAdapter) Adapt(r []byte) ([]byte, error) {
 		case bytes.EqualFold(req.Cmd.Cmd, []byte(protocol.CMDSET)):
 			// TODO: Implement better way to pass k:v pair to SET
 			// See if i can arrange the Args better in the Request DTO
+			fmt.Printf("❌ CALLING SET ==> %+v\n", req.Args)
 			res = t.core.Set(req.Args[0].GetValue(), req.Args[1])
 			return res, nil
 		}
